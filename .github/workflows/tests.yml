@@ -21,6 +21,7 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
 
     steps:
       - name: Checkout Code
@@ -30,26 +31,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v1
-          extensions: ldap, memcache, memcached
+          extensions: memcached
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-
-      - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Run PHPUnit tests
-        run: vendor/bin/phpunit
+      - name: Test ext-memcached
+        run: |
+          php -m
+          php -r 'var_dump(extension_loaded("memcached"));'
 
 # vim:ft=yaml:et:ts=2:sw=2
