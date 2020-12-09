@@ -37,7 +37,9 @@ jobs:
         run: |
           # Lint All PHP source files
           # Remove source expected to have syntax error
-          git rm tests/Zend/Loader/_files/ParseError.php
+          cp tests/Zend/Loader/_files/ParseError.php .
+          cp tests/Zend/Loader/_files/ParseError.php tests/ParseError.php
+          git add ParseError.php tests/ParseError.php
           git ls-files '**/*.php' | while read f; do php -l "$f" > /dev/null || touch failed && echo -n .; done
           test ! -f failed
 
