@@ -14,19 +14,7 @@ jobs:
         experimental:
           - false
         php:
-          - "5.3"
-          - "5.4"
-          - "5.5"
-          - "5.6"
-          - "7.0"
-          - "7.1"
-          - "7.2"
-          - "7.3"
-          - "7.4"
-        # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#example-including-additional-values-into-combinations
-        include:
-          - php: "8.0"
-            experimental: true
+          - "8.0"
 
     services:
       memcache:
@@ -45,18 +33,8 @@ jobs:
           ini-values: display_errors=off, log_errors=on
           extensions: :xdebug, ctype, dom, gd, iconv, ldap, mbstring, reflection, session, simplexml, spl, xml, zlib, memcache, pdo_sqlite, bcmath
 
-      # https://github.com/zf1s/zf1/pull/6#issuecomment-495397170
-      - name: Validate composer.json for all packages
-        run: |
-          for json in composer.json packages/*/composer.json; do COMPOSER=$json composer validate || touch failed; done
-          test ! -f failed
-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Lint PHP source files
-        run: |
-          composer lint
 
       - name: Setup environment for PHPUnit
         run: |
