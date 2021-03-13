@@ -61,6 +61,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           ini-values: display_errors=off, log_errors=on
+          tools: cs2pr
           extensions: :xdebug, ctype, dom, gd, iconv, ldap, mbstring, reflection, session, simplexml, spl, xml, zlib, memcache, pdo_sqlite, bcmath
 
       # https://github.com/zf1s/zf1/pull/6#issuecomment-495397170
